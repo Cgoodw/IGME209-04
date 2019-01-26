@@ -7,20 +7,21 @@
 
 int main()
 {
-    char wordA[25]= "supercalifraglistic"; 
+    char wordA[50]= "supercalifraglistic"; 
 	char wordB[25] = "expialidocious";
 
-	std::cout << "Length:  " << strlen(wordA);
-	//char wordC[50] = strcat(wordA, wordB);
+	std::cout << "Length:  " << strlen(wordA) << std::endl;
+	strcat_s(wordA, wordB);
+
+	std::cout << wordA << std::endl;
+	int x =0;
+
+	for (size_t i = 0; i < strlen(wordA); i++)
+	{
+		if (wordA[i]=='i'){
+			x++;
+		}
+	}
+	std::cout << "# of I's: " << x;
+
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
