@@ -23,7 +23,7 @@ int main()
 	char word[8]="hockey";
 	char guess[26]="";
 	cout << "Welcome to Hangman!\n";
-	cout << "Your word has " << strlen(word)+1 << " letters.\n";
+	cout << "Your word has " << strlen(word) << " letters.\n";
 
 	while (!lost)
 	{
