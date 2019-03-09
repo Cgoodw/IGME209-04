@@ -3,9 +3,9 @@
 class Scope :
 	public Item
 {
-	using Item::Item;
+	
 public:
-	Scope();
+	Scope(std::string, int,int);
 	~Scope();
 };
 

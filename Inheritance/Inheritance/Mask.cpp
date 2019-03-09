@@ -2,7 +2,8 @@
 #include "Mask.h"
 
 
-Mask::Mask()
+Mask::Mask(std::string n, int x, int y)
+	:Item(n, x, y)
 {
 }
 

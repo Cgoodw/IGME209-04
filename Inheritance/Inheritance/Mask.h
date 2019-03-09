@@ -3,9 +3,8 @@
 class Mask :
 	public Item
 {
-	using Item::Item;
 public:
-	Mask();
+	Mask(std::string, int, int);
 	~Mask();
 };
 

@@ -3,9 +3,8 @@
 class Battery :
 	public Item
 {
-	using Item::Item;
 public:
-	Battery();
+	Battery(std::string, int, int);
 	~Battery();
 };
 

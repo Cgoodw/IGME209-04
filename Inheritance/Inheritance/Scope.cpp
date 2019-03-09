@@ -2,10 +2,10 @@
 #include "Scope.h"
 
 
-Scope::Scope()
+Scope::Scope(std::string n, int x, int y)
+	:Item(n,x,y)
 {
 }
-
 
 Scope::~Scope()
 {

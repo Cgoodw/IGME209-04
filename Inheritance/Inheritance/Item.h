@@ -3,9 +3,9 @@
 struct Item
 {
 public:
-	Item();
 	Item(std::string,int,int);
 	~Item();
+
 	void print();
 
 private:

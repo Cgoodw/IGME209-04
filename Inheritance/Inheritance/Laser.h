@@ -3,9 +3,8 @@
 class Laser :
 	public Item
 {
-	using Item::Item;
 public:
-	Laser();
+	Laser(std::string, int, int);
 	~Laser();
 };
 

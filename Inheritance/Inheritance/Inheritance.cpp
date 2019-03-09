@@ -38,8 +38,4 @@ int main()
 		inventory[i]->print();
 	}
 
-	delete(laserp);
-	delete(scopep);
-	delete(batteryp);
-	delete(maskp);
 }

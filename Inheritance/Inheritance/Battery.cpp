@@ -2,7 +2,8 @@
 #include "Battery.h"
 
 
-Battery::Battery()
+Battery::Battery(std::string n, int x, int y)
+	:Item(n, x, y)
 {
 }
 
