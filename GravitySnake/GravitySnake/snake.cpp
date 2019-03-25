@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <random>
 
+
 b2Vec2* targetLocations;
 b2Vec2 currentLocation;
 
@@ -18,7 +19,7 @@ FunctionPtr moveRight = ApplyForceRight;
 //updates the world
 void update(b2World& world)
 {
-	float timeStep = 1.0f / 120.0f;
+	float timeStep = 1.0f / 160.0f;
 	int velocityIterations = 6;
 	int positionIterations = 2;
 	world.Step(timeStep, velocityIterations, positionIterations);
@@ -30,6 +31,25 @@ void display(b2Vec2 positionP, b2Vec2 positionT)
 	std::cout << "Position of player is: (" << positionP.x << "," << positionP.y << ")\n";
 	std::cout << "Position of target is: (" << positionT.x <<","<<positionT.y<<")\n";
 
+}
+
+
+void setupTargets(int cnt)
+{
+	currentLocation = b2Vec2(0, 0);
+	targetLocations = new b2Vec2[cnt + 1];
+
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	for (int i = 0; i < cnt-1; i++)
+	{
+		std::uniform_real_distribution<float> distribution(-5000.0, 5000.0);
+		targetLocations[i] = b2Vec2(distribution(rng), distribution(rng));
+	}
+	targetLocations[cnt] = b2Vec2(-10000, -10000);
+
+
+	currentLocation = targetLocations[0];
 }
 
 //applies force from keypress 
@@ -58,8 +78,9 @@ void applyForces(b2Body* snake , int key)
 }
 
 //moves the target
-void moveTarget(float& xPos, float& yPos)
+void moveTarget(float& xPos, float& yPos, int targets)
 {
+	currentLocation = targetLocations[targets];
 	xPos = currentLocation.x;
 	yPos = currentLocation.y;
 }
@@ -116,32 +137,15 @@ void ReverseGravity(b2World& world)
 	world.SetGravity(-world.GetGravity());
 }
 
-void setupTargets(int cnt)
-{
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	b2Vec2* targetLocations = new b2Vec2[cnt];
-	for (int i = 0; i < cnt; i++)
-	{
-		std::uniform_real_distribution<float> distribution(-6000.0, 6000.0);
-		
-		targetLocations[i] = b2Vec2(distribution(rng), distribution(rng));
-	}
-	targetLocations[cnt] = b2Vec2(-10000, -10000);
-
-	b2Vec2 currentLocation = targetLocations[0];
-}
 
 bool selectNextTarget(int targets)
 {
 
+	currentLocation = targetLocations[targets];
+
 	if (currentLocation.x > -9999) {
 		return false;
 	}
-
-	currentLocation = targetLocations[targets];
-
 	return true;
 }
-
 
