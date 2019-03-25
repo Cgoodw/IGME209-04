@@ -6,10 +6,19 @@
 #include <conio.h>
 #include <random>
 
+b2Vec2* targetLocations;
+b2Vec2 currentLocation;
+
+typedef void(*FunctionPtr)(b2Body&);
+FunctionPtr moveUp = ApplyForceUp;
+FunctionPtr moveDown = ApplyForceDown;
+FunctionPtr moveLeft = ApplyForceLeft;
+FunctionPtr moveRight = ApplyForceRight;
+
 //updates the world
 void update(b2World& world)
 {
-	float timeStep = 1.0f / 60.0f;
+	float timeStep = 1.0f / 120.0f;
 	int velocityIterations = 6;
 	int positionIterations = 2;
 	world.Step(timeStep, velocityIterations, positionIterations);
@@ -26,8 +35,6 @@ void display(b2Vec2 positionP, b2Vec2 positionT)
 //applies force from keypress 
 void applyForces(b2Body* snake , int key)
 {
-
-
 	snake->SetLinearVelocity(b2Vec2(0, 0));
 	snake->SetAngularVelocity(0);
 	switch (key)
@@ -51,14 +58,90 @@ void applyForces(b2Body* snake , int key)
 }
 
 //moves the target
-void moveTarget(float & xPos, float & yPos)
+void moveTarget(float& xPos, float& yPos)
 {
-	//random number between -5 and 5
+	xPos = currentLocation.x;
+	yPos = currentLocation.y;
+}
+
+void processInput(b2Body& player,b2World& world)
+{
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		moveLeft(player);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		moveRight(player);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		moveUp(player);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		moveDown(player);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+		ReverseGravity(world);
+	}
+	
+}
+
+void ApplyForceUp(b2Body& player)
+{
+	player.ApplyForceToCenter(b2Vec2(0, -20), true);
+}
+
+void ApplyForceDown(b2Body& player)
+{
+	player.ApplyForceToCenter(b2Vec2(0, 10), true);
+}
+
+void ApplyForceLeft(b2Body& player)
+{
+	player.ApplyForceToCenter(b2Vec2(-10, 0), true);
+}
+
+void ApplyForceRight(b2Body& player)
+{
+	player.ApplyForceToCenter(b2Vec2(10, 0), true);
+}
+
+void StopMoving(b2Body& player)
+{
+	player.SetLinearVelocity(b2Vec2(0, 0));
+	player.SetAngularVelocity(0);
+}
+
+void ReverseGravity(b2World& world)
+{
+	world.SetGravity(-world.GetGravity());
+}
+
+void setupTargets(int cnt)
+{
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_real_distribution<float> distribution(-5.0, 5.0);
-	xPos = distribution(rng);
-	yPos = distribution(rng);
+	b2Vec2* targetLocations = new b2Vec2[cnt];
+	for (int i = 0; i < cnt; i++)
+	{
+		std::uniform_real_distribution<float> distribution(-6000.0, 6000.0);
+		
+		targetLocations[i] = b2Vec2(distribution(rng), distribution(rng));
+	}
+	targetLocations[cnt] = b2Vec2(-10000, -10000);
+
+	b2Vec2 currentLocation = targetLocations[0];
+}
+
+bool selectNextTarget(int targets)
+{
+
+	if (currentLocation.x > -9999) {
+		return false;
+	}
+
+	currentLocation = targetLocations[targets];
+
+	return true;
 }
 
 
