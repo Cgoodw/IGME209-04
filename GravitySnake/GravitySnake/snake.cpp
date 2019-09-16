@@ -100,9 +100,9 @@ void processInput(b2Body& player,b2World& world)
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		moveDown(player);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-		ReverseGravity(world);
-	}
+	//else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+		
+	//}
 	
 }
 

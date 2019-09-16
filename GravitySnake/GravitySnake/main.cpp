@@ -14,7 +14,9 @@ int main()
 	float yPos=0;
 	int targets = 0;
 	int key=0;
-
+	bool win;
+	bool gravityDown;
+	bool flipped=false;
 
 	//welcome and instruction
 	int tars = 0;
@@ -24,7 +26,7 @@ int main()
 		std::cout << "How many Targets do you want?:   ";
 		std::cin >> tars;
 		if (tars < 10) {
-			std::cout << "Number must be more than 10";
+			std::cout << "Number must be more than 10 \n" ;
 		}
 	}
 	setupTargets(tars);
@@ -89,7 +91,6 @@ int main()
 			selectNextTarget(targets);
 			moveTarget(xPos, yPos, targets);
 			target->SetTransform(b2Vec2(xPos, yPos), target->GetAngle());
-			std::cout << "---------HIT!------------- \n";
 			targets++;
 		}
 
@@ -125,6 +126,16 @@ int main()
 			window.display();
 		}
 
+		if (targets % 3 == 0) {
+			if (!flipped) {
+				ReverseGravity(world);
+				std::cout << "Gravity Flipped!";
+				flipped = true;
+			}
+		}
+		else{
+			flipped = false;
+		}
 
 
 
