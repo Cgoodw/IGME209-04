@@ -111,6 +111,8 @@ int main()
 		processInput(*snake,world);
 		update(world);
 		
+
+
 		//if snake gets close to the target
 		if (b2Distance(positionP,positionT)<150) {
 
