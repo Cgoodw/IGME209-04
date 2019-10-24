@@ -1,10 +1,13 @@
 #include "snake.h"
+#include "sfml.h"
 #include <iostream>
 #define SMFL_STATIC
-#include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 #include <conio.h>
 
+#include <string>
+
+#include <vector>
 int targets;
 
 int main()
@@ -21,9 +24,10 @@ int main()
 	//welcome and instruction
 	int tars = 0;
 	std::cout << "Welcome to Gravity Snake \n";
-	std::cout << "Use the arrow Keys to  move and E to reverse gravity. \n";
+	std::cout << "Use the arrow Keys to move and hit targets. \n";
+	std::cout << "Every few targets, gravity will switch, collect all targets to win\n";
 	while (tars < 10) {
-		std::cout << "How many Targets do you want?:   ";
+		std::cout << "How many Targets do you want? (Minimum 10):   ";
 		std::cin >> tars;
 		if (tars < 10) {
 			std::cout << "Number must be more than 10 \n" ;
@@ -57,6 +61,28 @@ int main()
 	snakeDef.position.Set(0.0f, 0.0f);
 	b2Body* snake = world.CreateBody(&snakeDef);
 
+
+	//create snake body
+	std::vector<sf::CircleShape> snakeBod;
+
+	for (int i = 0; i < tars; i++) {
+		sf::CircleShape snakeB(10, 5);
+		snakeB.setFillColor(sf::Color(100, 100, 240));
+
+		snakeBod.push_back(snakeB);
+	}
+	// GUI
+
+	sf::Font font;
+	font.loadFromFile("arial.ttf");
+	sf::Text text("Score: ", font ,20);
+	sf::Text scoreText("0", font, 20);
+
+	sf::Text gravityText("Gravity Normal", font, 20);
+
+	scoreText.setPosition(100,0);
+
+	gravityText.setPosition(300, 0);
 
 	//create target
 	moveTarget(xPos, yPos, targets);
@@ -123,24 +149,48 @@ int main()
 			window.draw(snakeSquare);
 			window.draw(targetSquare);
 
+			if (targets > 1) {
+				scoreText.setString(std::to_string(targets - 1));
+			}
+			
+			//draw body
+			for (int i = 0; i < targets - 1; i++) {
+				if (!flipped) {
+					snakeBod[i].setPosition(snakeSquare.getPosition().x, snakeSquare.getPosition().y + (1+i * 10));
+				}
+				else {
+					snakeBod[i].setPosition(snakeSquare.getPosition().x, snakeSquare.getPosition().y - (1+i * 10));
+				}
+				window.draw(snakeBod[i]);
+			}
+
+
+
+			window.draw(text);
+			window.draw(scoreText);
+			window.draw(gravityText);
+
 			window.display();
 		}
 
-		if (targets % 3 == 0) {
+		if (targets>2&&targets % 3 == 0) {
 			if (!flipped) {
 				ReverseGravity(world);
-				std::cout << "Gravity Flipped!";
+				//std::cout << "Gravity Flipped!"<<std::endl;
+				gravityText.setString("Gravity Flipped!");
+					
 				flipped = true;
 			}
 		}
 		else{
 			flipped = false;
+			gravityText.setString("Gravity Normal");
 		}
 
 
 
 	}
-	std::cout << "Finished!";
+	std::cout << std::endl << "--------------" << std::endl << "Finished!";
 	window.close();
 	_getch();
 	return 0;

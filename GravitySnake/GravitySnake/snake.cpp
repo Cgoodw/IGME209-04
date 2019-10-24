@@ -1,7 +1,7 @@
 #include "snake.h"
+#include "sfml.h"
 #include <iostream>
 #define SMFL_STATIC
-#include <SFML/Window.hpp>
 #include <Box2D/Box2D.h>
 #include <conio.h>
 #include <random>
@@ -46,7 +46,7 @@ void setupTargets(int cnt)
 		std::uniform_real_distribution<float> distribution(-5000.0, 5000.0);
 		targetLocations[i] = b2Vec2(distribution(rng), distribution(rng));
 	}
-	targetLocations[cnt] = b2Vec2(-10000, -10000);
+	targetLocations[cnt] = b2Vec2(-1000, -1000);
 
 
 	currentLocation = targetLocations[0];
