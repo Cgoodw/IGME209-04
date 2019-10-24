@@ -38,9 +38,6 @@ artifacts/
 *_i.c
 *_p.c
 *_i.h
-*.ilk
-*.pch
-*.pdb
 *.pgc
 *.pgd
 *.rsp
@@ -48,7 +45,6 @@ artifacts/
 *.tlb
 *.tli
 *.tlh
-*.tmp
 *.tmp_proj
 *.log
 *.vspscc
